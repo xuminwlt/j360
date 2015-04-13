@@ -11,12 +11,6 @@
         <module>j360-base</module>
         <module>j360-web</module>
         <module>j360-core</module>
-        <module>j360-ext</module>
-        <module>j360-zookeeper</module>
-        <module>dubbo-consumer</module>
-        <module>dubbo-api</module>
-        <module>dubbo-console</module>
-        <module>j360-hadoop</module>
     </modules>
     <packaging>pom</packaging>
 
