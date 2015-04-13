@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd"
+	default-lazy-init="true">
+
+    <bean id="zookeeperFactoryBean" class="me.j360.web.zookeeper.queue.ZookeeperFactoryBean" lazy-init="false">
+        <property name="zkConnectionString" value="${zookeeper.connect_string}"/>
+        <property name="listeners">
+            <list>
+                <bean class="me.j360.web.zookeeper.queue.DistributedQueueDemo"></bean>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="zkClientService" class="me.j360.web.zookeeper.queue.ZkClientService">
+        <constructor-arg ref="zookeeperFactoryBean"/>
+    </bean>
+
+</beans>

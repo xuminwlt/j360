@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+	xsi:schemaLocation="http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd"
+	default-lazy-init="true">
+
+	<description>Apache CXF的Restful Web Service配置</description>
+	
+	<!-- jax-rs endpoint定义  -->
+	<jaxrs:server id="listContainer" address="/list">
+		<jaxrs:serviceBeans>
+			<ref bean="listJaxRsService" />
+		</jaxrs:serviceBeans>
+		<jaxrs:providers>
+			<bean class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider" />
+		</jaxrs:providers>
+	</jaxrs:server>
+	<!-- WebService的实现Bean定义 -->
+	<bean id="listJaxRsService" class="com.fz.us.web.webservice.ListJaxRsService" />
+	
+	<!-- jax-rs endpoint定义  -->
+	<jaxrs:server id="baseServiceContainer" address="/entity">
+		<jaxrs:serviceBeans>
+			<ref bean="baseEntityJaxRsService" />
+		</jaxrs:serviceBeans>
+		<jaxrs:providers>
+			<bean class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider" />
+		</jaxrs:providers>
+	</jaxrs:server>
+
+	<!-- WebService的实现Bean定义 -->
+	<bean id="baseEntityJaxRsService" class="com.fz.us.web.webservice.BaseEntityJaxRsService" />
+</beans>

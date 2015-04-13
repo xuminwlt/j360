@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd"
+	default-lazy-init="true">
+
+    <description>Quartz的本地Cron式执行任务配置</description>
+
+    <!-- 要调用的工作类 -->
+    <bean id="quartzJob" class="com.fz.us.web.quartz.JobImpl"></bean>
+    <!-- 定义调用对象和调用对象的方法 -->
+    <bean id="jobtask" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <!-- 调用的类 -->
+        <property name="targetObject">
+            <ref bean="quartzJob"/>
+        </property>
+        <!-- 调用类中的方法 -->
+        <property name="targetMethod">
+            <value>autoCompanyMembersEvaluate</value>
+        </property>
+
+        <!-- 同一任务在前一次执行未完成而Trigger时间又到时是否并发开始新的执行, 默认为true. -->
+        <property name="concurrent" value="false" />
+    </bean>
+    <!-- 定义触发时间 -->
+    <bean id="doTime" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail">
+            <ref bean="jobtask"/>
+        </property>
+        <!-- cron表达式 0 */1 * * * ? 一分钟一次-->
+        <!-- 0 0 1 * * ? 每天1点执行 -->
+        <property name="cronExpression">
+            <value>0 0 22 * * ?</value>
+
+            <!--测试用时间 一分钟一次
+            <value>0 */1 * * * ?</value>-->
+        </property>
+    </bean>
+
+    <!-- 总管理类 如果将lazy-init='false'那么容器启动就会执行调度程序  -->
+    <!-- Quartz本地Schduler -->
+    <bean id="startQuertz" lazy-init="false" autowire="no" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="doTime"/>
+            </list>
+        </property>
+
+
+        <!-- Quartz配置, 本地运行无需单独的quartz.properties文件，在此简单配置即可 -->
+        <property name="quartzProperties">
+            <props>
+                <prop key="org.quartz.threadPool.threadCount">5</prop>
+            </props>
+        </property>
+        <!-- 启动时延期2秒开始任务 -->
+        <property name="startupDelay" value="2" />
+    </bean>
+
+</beans>

@@ -9,6 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>j360-web</artifactId>
+    <packaging>war</packaging>
     <name>J360 :: Web</name>
     <properties>
         <!--jdbc mysql -->
@@ -27,6 +28,16 @@
         <dependency>
             <groupId>me.j360</groupId>
             <artifactId>j360-base</artifactId>
+            <version>${j360.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>me.j360</groupId>
+            <artifactId>j360-core</artifactId>
+            <version>${j360.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>me.j360</groupId>
+            <artifactId>j360-ext</artifactId>
             <version>${j360.version}</version>
         </dependency>
 
@@ -458,8 +469,18 @@
             <artifactId>log4jdbc</artifactId>
         </dependency>
         <!-- LOGGING end -->
-
-
+        <dependency>
+            <groupId>org.apache.zookeeper</groupId>
+            <artifactId>zookeeper</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-framework</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-recipes</artifactId>
+        </dependency>
         <!-- TEST Unit and Server begin -->
         <dependency>
             <groupId>org.springframework</groupId>

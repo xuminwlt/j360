@@ -31,7 +31,11 @@
             <artifactId>j360-base</artifactId>
             <version>${j360.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>me.j360</groupId>
+            <artifactId>j360-ext</artifactId>
+            <version>${j360.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>javax.xml.bind</groupId>

@@ -217,7 +217,11 @@
             <artifactId>commons-beanutils</artifactId>
         </dependency>
         <!--UTILS END-->
-
+        <!-- assertj -->
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+        </dependency>
 
         <!-- OTHER TOOLS begin -->
         <!-- pojo copy -->

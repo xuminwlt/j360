@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+    <!--
+   1.12. 自动加载无需启动服务
+   Convention插件可以自动重新加载配置的功能，无需重启容器，就可以刷新类中包含的action。这自动加载automatic xml 配置文件类似。你必须在struts.xml 中添加以下代码来启用本功能：
+   <constant name="struts.devMode" value="true"/>
+   <constant name="struts.convention.classes.reload" value="true" />
+   此功能没有在所有容器中进行过测试，强力建议不要在生产环境中使用。
+     -->
+    <!-- 是否显示详细错误信息 -->
+    <constant name="struts.devMode" value="true" />
+    <!-- 默认中国环境 -->
+    <constant name="struts.locale" value="zh_CN" />
+    <!-- 国际化资源文件名称 -->
+    <constant name="struts.custom.i18n.resources" value="messageResources_zh_CN" />
+    <!-- 是否自动加载国际化资源文件  -->
+    <constant name="struts.i18n.reload" value="false" />
+    <!-- convention类重新加载 -->
+    <constant name="struts.convention.classes.reload" value="false" />
+    <!-- 浏览器是否缓存静态内容 -->
+    <constant name="struts.serve.static.browserCache" value="true" />
+    <!-- 配置使用Spring管理Action-->
+    <constant name="struts.objectFactory" value="spring" />
+    <!-- 上传文件大小限制设置 2M-->
+    <constant name="struts.multipart.maxSize" value="2100000" />
+    <constant name="struts.multipart.saveDir" value="/tmp" />
+    <!-- 主题 -->
+    <constant name="struts.ui.theme" value="simple" />
+    <!-- 编码 -->
+    <constant name="struts.i18n.encoding" value="UTF-8" />
+    <!-- 后缀 -->
+    <constant name="struts.action.extension" value="action" />
+
+    <!-- 默认包路径包含action,actions,struts,struts2的所有包都会被struts作为含有Action类的路径来搜索。
+    你可以通过设置struts.convention.package.locators属性来修改这个配置。如：
+     -->
+    <constant name="struts.convention.package.locators" value="web,action" />
+    <!--
+    则定义了在项目中，包路径包含web和action的将被视为Action存在的路径来进行搜索。
+Com.ustb.web.*/com.ustb.action.*都将被视为含有Action的包路径而被搜索。
+接着，Convention从前一步找到的package以及其子package中寻找 com.opensymphony.xwork2.Action 的实现以及以Action结尾的类：
+com.example.actions.MainAction
+com.example.actions.products.Display (implements com.opensymphony.xwork2.Action)
+com.example.struts.company.details.ShowCompanyDetailsAction
+     -->
+    <!-- 结果资源的路径 -->
+    <constant name="struts.convention.result.path" value="/WEB-INF/jsp/" />
+    <!-- URL资源分隔符 执行该action的命令为  如果AaBbAction 则URL=aa-bb.action 方法为aa-bb!add.aciton Result=aa-bb.jsp -->
+    <constant name="struts.convention.action.name.separator" value="-" />
+
+    <!-- 直接访问方法 感叹号方式(需要开启),官网不推荐使用这种方式,建议大家不要使用 -->
+    <constant name="struts.enable.DynamicMethodInvocation" value="true"></constant>
+
+    <!--When using this plugin with Jetty in embedded mode, you need to set the following constants:-->
+    <constant name="struts.convention.exclude.parentClassLoader" value="false" />
+    <constant name="struts.convention.action.fileProtocols" value="jar,code-source" />
+
+    <package name="basePackage" extends="struts-default">
+        <interceptors>
+            <interceptor-stack name="baseStack">
+                <interceptor-ref name="exception" />
+                <interceptor-ref name="alias" />
+                <interceptor-ref name="servletConfig" />
+                <interceptor-ref name="i18n" />
+                <interceptor-ref name="prepare" />
+                <interceptor-ref name="chain" />
+                <interceptor-ref name="debugging" />
+                <interceptor-ref name="scopedModelDriven" />
+                <interceptor-ref name="modelDriven" />
+                <interceptor-ref name="fileUpload" />
+                <interceptor-ref name="checkbox" />
+                <interceptor-ref name="multiselect" />
+                <interceptor-ref name="staticParams" />
+                <interceptor-ref name="actionMappingParams" />
+                <interceptor-ref name="params">
+                    <param name="excludeParams">dojo\..*,^struts\..*</param>
+                </interceptor-ref>
+                <interceptor-ref name="conversionError"/>
+                <!-- 配置方法级别的校验 -->
+                <interceptor-ref name="validation">
+                    <param name="excludeMethods">input,back,cancel,browse</param>
+                    <param name="validateAnnotatedMethodOnly">true</param>
+                </interceptor-ref>
+                <interceptor-ref name="workflow">
+                    <param name="excludeMethods">input,back,cancel,browse</param>
+                </interceptor-ref>
+                <interceptor-ref name="modelDriven">
+                    <param name="refreshModelBeforeResult">true</param>
+                </interceptor-ref>
+                <interceptor-ref name="defaultStack">
+                    <param name="exception.logEnabled">true</param>
+                    <param name="exception.logLevel">warn</param>
+                </interceptor-ref>
+            </interceptor-stack>
+
+            <interceptor name="LogInterceptor" class="me.j360.web.interceptor.LogInterceptor"></interceptor>
+            <interceptor-stack name="logInterceptorStack">
+                <interceptor-ref name="LogInterceptor"/>
+
+            </interceptor-stack>
+        </interceptors>
+        <!-- 配置默认拦截器栈 -->
+        <default-interceptor-ref name="baseStack" />
+
+        <!-- 未到找Action指向页面 404-->
+        <default-action-ref name="status" />
+        <action name="status">
+            <result type="redirect">/WEB-INF/error/404.jsp</result>
+        </action>
+    </package>
+
+    <package name="main" extends="basePackage" namespace="/main/">
+        <interceptors>
+            <interceptor-stack name="adminStack">
+                <interceptor-ref name="baseStack" />
+            </interceptor-stack>
+        </interceptors>
+        <!-- 配置默认拦截器栈 -->
+        <default-interceptor-ref name="adminStack" />
+        <global-results>
+            <result name="denied">/accessDenied403.jsp</result>
+            <result name="adminindex" type="redirect">/main/index.action</result>
+        </global-results>
+    </package>
+
+    <package name="app" extends="basePackage" namespace="/app/">
+        <global-exception-mappings>
+            <exception-mapping exception="java.lang.Exceptions" result="error" />
+            <exception-mapping result="error" exception="java.lang.Throwable"></exception-mapping>
+        </global-exception-mappings>
+    </package>
+    <package name="com" extends="basePackage" namespace="/com/">
+        <interceptors>
+            <interceptor-stack name="adminStack">
+                <interceptor-ref name="baseStack" />
+
+                <interceptor-ref name="logInterceptorStack"/>
+            </interceptor-stack>
+        </interceptors>
+
+        <!-- 配置默认拦截器栈 -->
+        <default-interceptor-ref name="adminStack" />
+        <global-results>
+            <result name="error" >/WEB-INF/error/500.jsp</result>
+            <result name="webregister">/WEB-INF/jsp/com/register.jsp</result>
+            <result name="weblogin">/WEB-INF/jsp/com/login.jsp</result>
+            <result name="toindex" type="redirect">/com/index.action</result>
+            <result name="submitPage" type="redirect">/com/order!item.action?id=${keyId}</result>
+            <result name="app" type="redirect">/com/US.apk</result>
+
+            <result name="payindex" type="redirect">/com/pay!index.action?keyId=${keyId}</result>
+            <result name="payend">/WEB-INF/jsp/com/pay_payend.jsp</result>
+        </global-results>
+        <global-exception-mappings>
+            <exception-mapping exception="java.lang.Exceptions" result="error" />
+            <exception-mapping exception="java.lang.Throwable"  result="error" />
+        </global-exception-mappings>
+    </package>
+
+    <package name="api" extends="basePackage" namespace="/api/">
+        <interceptors>
+            <interceptor-stack name="adminStack">
+                <interceptor-ref name="baseStack" />
+            </interceptor-stack>
+        </interceptors>
+        <!-- 配置默认拦截器栈 -->
+        <default-interceptor-ref name="adminStack" />
+        <global-results>
+            <result name="error_timeout">/html/error_timeout.jsp</result>
+            <result name="mplogin">/WEB-INF/jsp/mp/login.jsp</result>
+            <result name="mpindex" type="redirect">/mp/account/index.action</result>
+        </global-results>
+
+    </package>
+
+    <package name="mp" extends="basePackage" namespace="/mp/">
+        <interceptors>
+            <interceptor-stack name="adminStack">
+                <interceptor-ref name="baseStack" />
+            </interceptor-stack>
+        </interceptors>
+        <!-- 配置默认拦截器栈 -->
+        <default-interceptor-ref name="adminStack" />
+        <global-results>
+            <result name="error_timeout">/html/error_timeout.jsp</result>
+            <result name="mplogin" type="redirect">/mp/login.action</result>
+            <result name="mpindex" type="redirect">/mp/account/index.action</result>
+            <result name="mptest" type="redirect">/mp/account/mptest.action</result>
+            <result name="warn">/WEB-INF/jsp/mp/warning.jsp</result>
+        </global-results>
+
+        <global-exception-mappings>
+            <exception-mapping exception="java.lang.Exceptions" result="error" />
+            <exception-mapping result="error" exception="java.lang.Throwable"></exception-mapping>
+        </global-exception-mappings>
+    </package>
+    <!--
+    1.3. 命名空间
+命名空间。从定义的.package.locators标示开始到包结束的部分，就是命名空间。举个例子：
+Com.ustb.web.user.userAction的命名空间是：”/user”。
+Com.ustb.web.user.detail.UserAction的命名空间是：”/user/detail”
+1.4. Actin类名路径分割
+Convention通过如下规则确定URL的具体资源部分:去掉类名的Action部分。然后将将每个分部的首字母转为小写，用’-’分割，你可以设置struts.convention.action.name.separator 如
+<constant name="struts.convention.action.name.separator" value="-" />
+还是举个例子：
+UserAction->user  UserDetailAction ->user-detail。
+结合上面的。
+对于com.ustb.web.user.detail.UserDetailAction，映射的url就是/WEB-INF/content/user/detail/user-detail.jsp
+     -->
+    <!-- 1.5. 支持jsp、html、htm、vm等格式
+struts支持.jsp .html .htm .vm格式的文件。
+下面是actiong和结果模版的映射关系：
+URL  Result  File that could match  Result Type 
+/hello  success /WEB-INF/content/hello.jsp Dispatcher 
+/hello  success /WEB-INF/content/hello-success.htm Dispatcher 
+/hello  success /WEB-INF/content/hello.ftl FreeMarker 
+/hello  input /WEB-INF/content/hello-world-input.vm Velocity 
+/hello  error /WEB-INF/content/test/test2/hello-error.html Dispatcher 
+以上的内容来自struts2的文档http://struts.apache.org/2.1.6/docs/convention-plugin.html
+当然，简单的通过默认的方式来进行配置不能完全满足实际项目的需要。所幸，convention的零配置是非常灵活的。 -->
+
+</struts>

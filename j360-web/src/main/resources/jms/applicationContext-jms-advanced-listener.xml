@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+	<description>JMS高级应用配置(NON_PERSISTENT,DURIABLE,SELECTOR)-消费者</description>
+	<!-- 异步接收Queue消息Container -->
+	<bean id="advancedQueueContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+		<property name="connectionFactory" ref="advancedConnectionFactory" />
+		<property name="destination" ref="advancedNotifyQueue" />
+		<property name="messageListener" ref="advancedNotifyMessageListener" />
+		<!-- 初始5个Consumer, 可动态扩展到10 -->
+		<property name="concurrentConsumers" value="5" />
+		<property name="maxConcurrentConsumers" value="10" />
+		<!-- 设置消息确认模式为Client -->
+		<property name="sessionAcknowledgeModeName" value="CLIENT_ACKNOWLEDGE" />
+	</bean>
+
+	<!-- 异步接收Topic消息Container --><!-- JMS Selector消息过滤器 --><!-- 持久化订阅者
+	<bean id="advancedTopicContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+		<property name="connectionFactory" ref="advancedTopicConnectionFactory" />
+		<property name="destination" ref="advancedNotifyTopic" />
+		<property name="messageListener" ref="advancedNotifyMessageListener" />
+
+		<property name="messageSelector" value="objectType='user'" />
+
+		<property name="subscriptionDurable" value="true" />
+	</bean>-->
+
+	<!-- 异步接收消息处理类 -->
+	<bean id="advancedNotifyMessageListener" class="com.fz.us.core.service.jms.AdvancedNotifyMessageListener" >
+		<property name="jpushAppKey" value="${jpush.appkey}" />
+		<property name="jpushMasterSecret" value="${jpush.mastersecret}" />
+	</bean>
+</beans>

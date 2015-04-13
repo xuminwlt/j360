@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<jmxConfigurator />
+
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%date{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="rollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>/tmp/logs/us.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>/tmp/logs/us.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%date{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="businessLogFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>/tmp/logs/business.log</file>
+		<!-- 按每小时滚动文件，如果一个小时内达到10M也会滚动文件, 滚动文件将会压缩成zip格式 -->
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>/workspace/logs/business-%d{yyyy-MM-dd}.%i.zip</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>10MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<!-- 独立的pattern -->
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS},%msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<!-- project default level
+	<logger name="com.fz.us.web" level="INFO" />-->
+	<!-- business log 使用独立的appender，不继承Root的appender -->
+	<logger name="com.fz.us" level="INFO" additivity="false">
+		<appender-ref ref="businessLogFile" />
+		<appender-ref ref="db-classic-mysql-pool" />
+	</logger>
+	<!--  modules -->
+	<!-- cxf inbound/outbound logger -->
+	<logger name="org.apache.cxf.services" level="INFO" additivity="false">
+		<appender-ref ref="businessLogFile" />
+		<appender-ref ref="db-classic-mysql-pool" />
+	</logger>
+
+	<!-- 数据库输出-->
+	<appender name="db-classic-mysql-pool" class="ch.qos.logback.classic.db.DBAppender">
+		<connectionSource class="ch.qos.logback.core.db.DataSourceConnectionSource">
+			<dataSource class="com.alibaba.druid.pool.DruidDataSource">
+				<driverClassName>com.mysql.jdbc.Driver</driverClassName>
+				<url>jdbc:mysql://localhost:3306/j360-log</url>
+				<username>root</username>
+				<password></password>
+			</dataSource>
+		</connectionSource>
+	</appender>
+
+	<!--log4jdbc -->
+	<logger name="jdbc.sqltiming" level="OFF"/>
+	<logger name="java.sql.Connection">
+		<level value="OFF" />
+	</logger>
+	<logger name="java.sql.Statement">
+		<level value="WARN" />
+	</logger>
+	<logger name="jdbc.resultset" level="OFF"/>
+	<logger name="org.hibernate" level="error"/>
+	<logger name="jdbc.audit" level="OFF"/>
+	<logger name="com.thunisoft.test" level="error"/>
+	<logger name="jdbc.sqlonly" level="INFO"/>
+
+	<!-- show parameters for hibernate sql 专为 Hibernate 定制 -->
+	<logger name="org.hibernate.type.descriptor.sql.BasicBinder"
+			level="INFO" />
+	<logger name="org.hibernate.type.descriptor.sql.BasicExtractor"
+			level="INFO" />
+	<logger name="org.hibernate.SQL" level="INFO" />
+	<logger name="org.hibernate.engine.QueryParameters" level="INFO" />
+	<logger name="org.hibernate.engine.query.HQLQueryPlan" level="INFO" />
+
+	<!-- 下面配置一些第三方包的日志过滤级别，用于避免刷屏 -->
+	<logger name="org.hibernate" level="WARN" />
+	<logger name="org.springframework" level="WARN" />
+	<logger name="com.opensymphony" level="WARN" />
+	<logger name="org.apache" level="WARN" />
+
+	<logger name="org.springframework.test">
+		<level value="INFO" />
+	</logger>
+	<logger name="org.apache.struts2">
+		<level value="INFO" />
+	</logger>
+	<logger name="com.opensymphony.xwork2">
+		<level value="INFO" />
+	</logger>
+    <logger name="org.apache.zookeeper">
+        <level value="debug"/>
+    </logger>
+
+	<!-- root -->
+	<root level="INFO">
+		<appender-ref ref="console" />
+		<appender-ref ref="rollingFile" />
+		<appender-ref ref="db-classic-mysql-pool" />
+	</root>
+</configuration>
