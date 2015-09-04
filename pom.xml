@@ -9,7 +9,6 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>j360-base</module>
-        <module>j360-web</module>
         <module>j360-core</module>
         <module>j360-ext</module>
         <module>j360-zookeeper</module>
@@ -17,6 +16,9 @@
         <module>dubbo-api</module>
         <module>dubbo-console</module>
         <module>j360-hadoop</module>
+        <module>j360-hdfs</module>
+        <module>hadoop</module>
+        <module>hadoop26</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -644,11 +646,6 @@
                 <version>18.0-rc1</version>
             </dependency>
 
-            <dependency>
-                <groupId>it.sauronsoftware</groupId>
-                <artifactId>jave</artifactId>
-                <version>1.0.2</version>
-            </dependency>
             <!-- OTHER TOOLS END -->
 
             <!-- LOGGING begin -->

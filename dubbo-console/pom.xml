@@ -411,10 +411,6 @@
             <artifactId>gson</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>it.sauronsoftware</groupId>
-            <artifactId>jave</artifactId>
-        </dependency>
         <!-- OTHER TOOLS END -->
 
         <!-- LOGGING begin -->
