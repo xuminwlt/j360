@@ -10,18 +10,14 @@
     <modules>
         <module>j360-base</module>
         <module>j360-core</module>
-<<<<<<< HEAD
-=======
         <module>j360-ext</module>
         <module>j360-zookeeper</module>
         <module>dubbo-consumer</module>
-        <module>dubbo-api</module>
         <module>dubbo-console</module>
         <module>j360-hadoop</module>
         <module>j360-hdfs</module>
         <module>hadoop</module>
         <module>hadoop26</module>
->>>>>>> development
     </modules>
     <packaging>pom</packaging>
 
