@@ -1,6 +1,6 @@
+/*
 package me.j360.web.action;
 
-import com.ctc.wstx.util.DataUtil;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.gridfs.GridFSDBFile;
@@ -35,6 +35,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+*/
 /**
  * 后台Action类 - Action基类
  * ============================================================================
@@ -45,7 +46,8 @@ import java.util.*;
  * @version 0.1 2014-01-20
  * @version 0.2 2014-07-25 update by fallenpanda
  * ============================================================================
- */
+ *//*
+
 
 @Scope("prototype")
 public class BaseAction extends ActionSupport {
@@ -153,7 +155,9 @@ public class BaseAction extends ActionSupport {
 	protected String logInfo;// 日志记录信息
 	protected String redirectionUrl;// 操作提示后的跳转URL,为null则返回前一页
 
-	/*常用对象*/
+	*/
+/*常用对象*//*
+
 	protected String view;//视图名
 	protected String cat;//关键字
 	protected int page;//页数
@@ -163,7 +167,9 @@ public class BaseAction extends ActionSupport {
 	protected String filters;
 	protected String order;//desc asc
 	protected String sort;//desc asc
-	/*jqGrid*/
+	*/
+/*jqGrid*//*
+
 	protected String sidx;
 	protected String _search;
 	protected String nd;
@@ -201,10 +207,14 @@ public class BaseAction extends ActionSupport {
 	//提交还是保存的状态 空或者null 则为save submit 判断不等于submit
 	protected String saveoption;
 
-	/* Edit 对象*/
+	*/
+/* Edit 对象*//*
+
 	protected String oper;
 	protected String parent;//父ID	// 最后登录异常Session名称
-	/* 通用树节点名 对象*/
+	*/
+/* 通用树节点名 对象*//*
+
 	protected String nodeName;
 
 	protected static final String EDIT = "edit";
@@ -248,10 +258,12 @@ public class BaseAction extends ActionSupport {
 		public int validMpLink(String mp_code){
 			if (StringUtils.isEmpty(mp_code)) {
 				//test code ↓ 为了兼容测试需要，通过手机浏览器测试，自动生成cookie
-			/*addCookie("webOpenId","ovzt9t3YC_YG7Uw7QnmBbP3BOITM");
+			*/
+/*addCookie("webOpenId","ovzt9t3YC_YG7Uw7QnmBbP3BOITM");
 			addCookie("webUsername","xumin@9joint.com");
 			setSession("webUsername","xumin@9joint.com");
-			return 2;*/
+			return 2;*//*
+
 
 				return 0;
 			}
@@ -288,22 +300,26 @@ public class BaseAction extends ActionSupport {
 		public boolean isSubmit(String saveoption){
 			return (!StringUtils.isEmpty(saveoption))&&(StringUtils.equals("submit", saveoption));
 		}
-		/**
+		*/
+/**
 		 * Cookieの追加
 		 * @return
 		 * @throws Exception
-		 */
+		 *//*
+
 		public void addCookie(String name,String value){
 			Cookie cookie = new Cookie(name, value);
 			cookie.setMaxAge(60*60*24*365);
 			cookie.setPath("/");
 			ServletActionContext.getResponse().addCookie(cookie);
 		}
-		/**
+		*/
+/**
 		 * Cookieの、删除
 		 * @return
 		 * @throws Exception
-		 */
+		 *//*
+
 		public void deleteCookie(String name){
 			HttpServletRequest request = ServletActionContext.getRequest();
 			Cookie[] cookies = request.getCookies();
@@ -321,11 +337,13 @@ public class BaseAction extends ActionSupport {
 				}
 			}
 		}
-		/**
+		*/
+/**
 		 * Cookieの取得
 		 * @return
 		 * @throws Exception
-		 */
+		 *//*
+
 		public String getCookie(String name){
 			HttpServletRequest request = ServletActionContext.getRequest();
 			Cookie[] cookies = request.getCookies();
@@ -376,9 +394,11 @@ public class BaseAction extends ActionSupport {
 			return params;
 		}
 
-		/**
+		*/
+/**
 		 * 打印Request信息
-		 */
+		 *//*
+
 		protected void printRequestInfo(){
 			HttpServletRequest request = getRequest();
 			HttpSession httpSession = request.getSession();
@@ -393,9 +413,11 @@ public class BaseAction extends ActionSupport {
 			System.out.println("--------------------------------------------------------");
 		}
 
-		/*
+		*/
+/*
          * state = 200 成功，300必须提示，有警告信息存在，400失败
-         * */
+         * *//*
+
 		public String ajaxCallback(String state,String message){
 			String json = "{\"state\":\""+state+"\",\"message\":\""+message+"\"}";
 			return ajaxJson(json);
@@ -413,13 +435,15 @@ public class BaseAction extends ActionSupport {
 			return ajaxHtml(json);
 		}
 
-		/**
+		*/
+/**
 		 * 返回App Json数据/结果
 		 * @param errorCode 成功 = 1
 		 * @param errorMessage 错误消息
 		 * @param object  JsonObject数据
 		 * @return
-		 */
+		 *//*
+
 		public String ajaxHtmlAppResult(int errorCode, String errorMessage, JSONObject object ){
 			//{"result":{"errorCode":"","errorMessage":""},"data":""}
 			Map<String, Object> mpMap = new HashMap<String, Object>();
@@ -451,9 +475,11 @@ public class BaseAction extends ActionSupport {
 
     @Resource
     private ResultService resultService;
-	/**
+	*/
+/**
 	 * 转换来自于Service的保存和更新的简单result
-	 * */
+	 * *//*
+
 	public String mpResult(Result result){
 		if(result.getState() == 1){
 			if(result.getData() == null && StringUtils.isNotEmpty(result.getMessage())){
@@ -471,13 +497,15 @@ public class BaseAction extends ActionSupport {
         return ajaxHtmlAppResult(result.getState(), StringUtils.isNotEmpty(result.getMessage())?result.getMessage():"", result.getData()!=null?JSONObject.fromObject(result.getData()):new JSONObject());
     }
 
-    /**
+    */
+/**
      * 返回App Json数据/结果
      * @param errorCode 成功 = 1
      * @param errorMessage 错误消息
      * @param jsonArray  JsonArray数据
      * @return
-     */
+     *//*
+
     public String ajaxHtmlAppJSONArrayResult(int errorCode, String errorMessage, JSONArray jsonArray ){
         //{"result":{"errorCode":"","errorMessage":""},"data":""}
         Map<String, Object> mpMap = new HashMap<String, Object>();
@@ -492,7 +520,8 @@ public class BaseAction extends ActionSupport {
         return ajaxJson(JSONObject.fromObject(mpMap).toString());
     }
 
-    /*
+    */
+/*
         // 获取系统配置信息
         public SystemConfig getSystemConfig() {
             return SystemConfigUtil.getSystemConfig();
@@ -517,7 +546,8 @@ public class BaseAction extends ActionSupport {
         public String getOrderUnitCurrencyFormat() {
             return SystemConfigUtil.getOrderUnitCurrencyFormat();
         }
-    */
+    *//*
+
     // 获取Attribute
     public Object getAttribute(String name) {
         return ServletActionContext.getRequest().getAttribute(name);
@@ -652,7 +682,8 @@ public class BaseAction extends ActionSupport {
 
 
     //上传文件
-    /**
+    */
+/**
      * 上传文件
      * 文件路径 = root = upload(myFile, myFileFileName,fileDirName);
      * (fileDirName 在Action中定义为常量，对象下文件存放文件夹 名称)
@@ -665,7 +696,8 @@ public class BaseAction extends ActionSupport {
      *
      * @return String
      * 			      保存文件绝对路径
-     */
+     *//*
+
     public String upload(File file,String fileName,String dirName){
         InputStream is = null;
         OutputStream os = null;
@@ -1054,3 +1086,4 @@ public class BaseAction extends ActionSupport {
     }
 
 }
+*/

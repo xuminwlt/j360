@@ -1,3 +1,4 @@
+/*
 package me.j360.web.action.com;
 
 import me.j360.web.action.BaseAction;
@@ -13,13 +14,15 @@ import org.springframework.util.Assert;
 import javax.annotation.Resource;
 import java.util.List;
 
+*/
 /**
  * 后台Action类 - 工作日历
  * ============================================================================
  * 版权所有  。
  * ----------------------------------------------------------------------------
  *
- */
+ *//*
+
 
 @ParentPackage("com")
 public class ChatAction extends BaseAction {
@@ -56,3 +59,4 @@ public class ChatAction extends BaseAction {
     }
 
 }
+*/

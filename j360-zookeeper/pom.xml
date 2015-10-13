@@ -8,9 +8,9 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>j360-web</artifactId>
-    <packaging>war</packaging>
-    <name>J360 :: Web</name>
+    <packaging>jar</packaging>
+    <artifactId>j360-zookeeper</artifactId>
+    <name>J360 :: Zookeeper</name>
     <properties>
         <!--jdbc mysql -->
         <jdbc.driver.groupId>mysql</jdbc.driver.groupId>
@@ -431,10 +431,6 @@
             <artifactId>gson</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>it.sauronsoftware</groupId>
-            <artifactId>jave</artifactId>
-        </dependency>
         <!-- OTHER TOOLS END -->
 
         <!-- LOGGING begin -->
@@ -476,11 +472,24 @@
         <dependency>
             <groupId>org.apache.curator</groupId>
             <artifactId>curator-framework</artifactId>
+            <version>2.7.1</version>
         </dependency>
         <dependency>
             <groupId>org.apache.curator</groupId>
             <artifactId>curator-recipes</artifactId>
+            <version>2.7.1</version>
         </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>dubbo</artifactId>
+            <version>2.5.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.sgroschupf</groupId>
+            <artifactId>zkclient</artifactId>
+            <version>0.1</version>
+        </dependency>
+
         <!-- TEST Unit and Server begin -->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -518,137 +527,6 @@
                 <filtering>true</filtering>
             </resource>
         </resources>
-        <plugins>
-            <!-- compiler插件, 设定JDK版本 -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                    <showWarnings>true</showWarnings>
-                </configuration>
-            </plugin>
 
-            <!-- eclipse插件, 设定wtp版本并添加springIDE nature -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-eclipse-plugin</artifactId>
-                <version>2.9</version>
-                <configuration>
-                    <wtpversion>2.0</wtpversion>
-                    <additionalProjectnatures>
-                        <projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
-                    </additionalProjectnatures>
-                </configuration>
-            </plugin>
-
-            <!-- jetty插件, 设定context path与spring profile -->
-            <!-- scanIntervalSeconds设置的是jetty自动扫描的间隔，单位秒 发现有改动自动更新部署，默认为0，即不扫描管理热部署工程。 -->
-            <!-- systemProperties 设置spring配置文件使用 development 开发环境配置 -->
-            <plugin>
-                <groupId>org.mortbay.jetty</groupId>
-                <artifactId>jetty-maven-plugin</artifactId>
-                <configuration>
-
-                    <systemProperties>
-                        <systemProperty>
-                            <name>spring.profiles.active</name>
-                            <value>development</value>
-                        </systemProperty>
-                        <systemProperty>
-                            <name>org.mortbay.util.URI.charset</name>
-                            <value>UTF-8</value>
-                        </systemProperty>
-                    </systemProperties>
-                    <useTestClasspath>true</useTestClasspath>
-                    <webAppConfig>
-                        <contextPath>/${project.artifactId}</contextPath>
-                        <defaultsDescriptor>${project.basedir}/src/test/resources/webdefault.xml</defaultsDescriptor>
-                    </webAppConfig>
-                    <reload>automatic</reload>
-                    <scanIntervalSeconds>0</scanIntervalSeconds>
-                    <contextXml>${project.basedir}/src/test/resources/jetty-context.xml</contextXml>
-                    <jvmArgs>-Xms512m -Xmx1024m -XX:PermSize=512m -XX:MaxPermSize=512m -XX:+CMSClassUnloadingEnabled -XX:+PrintGCDetails -XX:+HeapDumpOnOutOfMemoryError
-                        -Dfile.encoding=UTF-8</jvmArgs>
-                    <connectors>
-                        <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
-                            <port>8080</port>
-                            <maxIdleTime>60000</maxIdleTime>
-                        </connector>
-                    </connectors>
-                </configuration>
-            </plugin>
-
-            <!-- resource插件 -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>2.6</version>
-                <configuration>
-                    <nonFilteredFileExtensions>
-                        <!-- 过滤流程定义资源文件 -->
-                        <nonFilteredFileExtension>zip</nonFilteredFileExtension>
-                        <nonFilteredFileExtension>bar</nonFilteredFileExtension>
-                        <nonFilteredFileExtension>png</nonFilteredFileExtension>
-                        <nonFilteredFileExtension>bpmn</nonFilteredFileExtension>
-                        <!-- 过滤模板文件 -->
-                        <nonFilteredFileExtension>xls</nonFilteredFileExtension>
-                        <nonFilteredFileExtension>xlsx</nonFilteredFileExtension>
-                        <nonFilteredFileExtension>csv</nonFilteredFileExtension>
-                    </nonFilteredFileExtensions>
-                    <encoding>${project.build.sourceEncoding}</encoding>
-                </configuration>
-            </plugin>
-
-            <!-- tomcat6 -->
-            <plugin>
-                <groupId>org.apache.tomcat.maven</groupId>
-                <artifactId>tomcat6-maven-plugin</artifactId>
-                <version>2.2</version>
-                <configuration>
-                    <path>/${project.artifactId}</path>
-                </configuration>
-            </plugin>
-
-            <!-- tomcat7 -->
-            <plugin>
-                <groupId>org.apache.tomcat.maven</groupId>
-                <artifactId>tomcat7-maven-plugin</artifactId>
-                <version>2.2</version>
-                <configuration>
-                    <path>/${project.artifactId}</path>
-                </configuration>
-            </plugin>
-        </plugins>
-        <finalName>j360</finalName>
     </build>
-
-    <profiles>
-
-        <!--打包可执行war包,基于Tomcat -->
-        <profile>
-            <id>standalone-tomcat</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.tomcat.maven</groupId>
-                        <artifactId>tomcat7-maven-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>tomcat-run</id>
-                                <goals>
-                                    <goal>exec-war-only</goal>
-                                </goals>
-                                <phase>package</phase>
-                                <configuration>
-                                    <attachArtifactClassifier>standalone-tomcat</attachArtifactClassifier>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
 </project>
