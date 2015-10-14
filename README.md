@@ -49,4 +49,7 @@ $git checkout<br />
 * 2）右键工程 - git - Repository - Branches - Local Branches - 下面选择对应的分支 - Merge<br />
 * 3)完成、提交一次到本地 - 提交到远程服务器<br />
 
-
+###模块设计###
+- j360-base
+- j360-core
+- j360-web
