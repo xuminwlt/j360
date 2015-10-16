@@ -9,4 +9,5 @@ package me.j360.dubbo.api;
  */
 public interface TestRegistryService {
     public String hello(String name);
+
 }
