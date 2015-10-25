@@ -53,3 +53,7 @@ $git checkout<br />
 - j360-base
 - j360-core
 - j360-web
+- j360-hdfs
+- dubbo-console
+- dubbo-consumer
+- dubbo-api
