@@ -18,6 +18,7 @@
         <module>j360-hdfs</module>
         <module>hadoop</module>
         <module>hadoop26</module>
+        <module>j360-data-common</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -61,6 +62,8 @@
         <shiro.version>1.2.3</shiro.version>
         <cxf.version>2.7.13</cxf.version>
 
+
+        <mybatis.version>3.2.7</mybatis.version>
         <!-- bean -->
         <hibernate-validator.version>5.0.3.Final</hibernate-validator.version>
         <jackson.version>2.4.3</jackson.version>
@@ -184,6 +187,18 @@
                 <version>1.1.6</version>
             </dependency>
             <!--JAVAX END-->
+
+            <!-- mybatis -->
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis</artifactId>
+                <version>${mybatis.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis-spring</artifactId>
+                <version>1.2.2</version>
+            </dependency>
 
             <!--SSH-->
             <!-- spring-->
