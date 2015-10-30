@@ -38,6 +38,12 @@
 	<!-- 定义aspectj -->
 	<aop:aspectj-autoproxy proxy-target-class="true"/>
 
+	<!-- 使用annotation定义事务 -->
+	<tx:annotation-driven proxy-target-class="true" />
+
+	<!-- 定义aspectj -->
+	<aop:aspectj-autoproxy proxy-target-class="true"/>
+
 	<!-- hibernate validator -->
 	<bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>
 
@@ -63,5 +69,29 @@
 			<jdbc:script location="classpath:data/h2/import-data.sql" encoding="UTF-8" />
 		</jdbc:initialize-database>
 
+
+
+		<bean id="parentDataSource"
+			  class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+			  abstract="true">
+			<property name="driverClassName" value="org.hsqldb.jdbcDriver"/>
+			<property name="username" value="sa"/>
+		</bean>
+
+		<bean id="goldDataSource" parent="parentDataSource">
+			<property name="url" value="jdbc:hsqldb:hsql://localhost:${db.port.gold}/blog"/>
+		</bean>
+
+		<bean id="silverDataSource" parent="parentDataSource">
+			<property name="url" value="jdbc:hsqldb:hsql://localhost:${db.port.silver}/blog"/>
+		</bean>
+
+		<bean id="bronzeDataSource" parent="parentDataSource">
+			<property name="url" value="jdbc:hsqldb:hsql://localhost:${db.port.bronze}/blog"/>
+		</bean>
+
+		<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+
+		</bean>
 	</beans>
 </beans>

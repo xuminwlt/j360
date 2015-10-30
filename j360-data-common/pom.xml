@@ -60,6 +60,13 @@
         </dependency>
         <!--JAVAX END-->
 
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>18.0</version>
+        </dependency>
+
         <!--SSH-->
         <!-- spring-->
         <!-- 纯粹为了exclude commons-loging -->
