@@ -11,13 +11,14 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
+import spring.SpringContextTestCase;
 import spring.SpringTransactionalTestCase;
 
 import static org.assertj.core.api.Assertions.*;
 
 @DirtiesContext
 @ContextConfiguration(locations = { "/applicationContext.xml" })
-public class TeamMybatisDaoTest extends SpringTransactionalTestCase {
+public class TeamMybatisDaoTest extends SpringContextTestCase {
 
 	@Autowired
 	private TeamMybatisDao teamDao;
