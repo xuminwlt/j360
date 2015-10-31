@@ -13,6 +13,12 @@
 		default-lazy-init="true">
 
 	<description>Spring公共配置</description>
+	<!-- 使用annotation 自动注册bean,并检查@Required,@Autowired的属性已被注入 -->
+	<context:component-scan base-package="me.j360">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+		<context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+	</context:component-scan>
+
 	<bean id="parentDataSource"
 		  class="org.springframework.jdbc.datasource.DriverManagerDataSource"
 		  abstract="true">
@@ -38,7 +44,6 @@
 	</bean>
 
 
-
 	<bean id="catalog" class="me.j360.data.multdatasource.Catalog">
 		<property name="dataSource" ref="dataSource"/>
 	</bean>
@@ -52,6 +57,14 @@
 		</property>
 		<property name="defaultTargetDataSource" ref="bronzeDataSource"/>
 	</bean>
+
+	<!--事务会默认绑定到defult上面，这里不能指定datasource，必须指定一个goldDataSource-->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!-- 使用annotation定义事务 -->
+	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
 
 
 </beans>

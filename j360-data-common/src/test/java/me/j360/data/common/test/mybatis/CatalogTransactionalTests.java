@@ -19,32 +19,40 @@ import static org.assertj.core.api.Assertions.*;
  * User: min_xu
  * Date: 2015/10/31
  * Time: 9:56
- * 说明：
+ * 说明：使用事务方式，每个方法中不允许同时访问多个数据库，否则会抛出异常
  */
 
 @DirtiesContext
 @ContextConfiguration(locations = { "/applicationContext-multdatasource.xml" })
-public class CatalogTests extends SpringContextTestCase {
+public class CatalogTransactionalTests extends SpringTransactionalTestCase {
 
     @Resource
     private Catalog catalog;
 
 
     @Test
-    public void testDataSourceRouting() {
+    public void testDataSourcegoldItems() {
         CustomerContextHolder.setCustomerType(CustomerType.GOLD);
         List<Item> goldItems = catalog.getItems();
-        assertThat(3).isEqualTo(goldItems.size());
+        assertThat(goldItems.size()).isEqualTo(3);
         System.out.println("gold items: " + goldItems);
 
+    }
+
+    @Test
+    public void testDataSourcesilverItems() {
         CustomerContextHolder.setCustomerType(CustomerType.SILVER);
         List<Item> silverItems = catalog.getItems();
-        assertThat(2).isEqualTo(silverItems.size());
+        assertThat(silverItems.size()).isEqualTo(2);
         System.out.println("silver items: " + silverItems);
 
+    }
+
+    @Test
+    public void testDataSourcebronzeItems() {
         CustomerContextHolder.clearCustomerType();
         List<Item> bronzeItems = catalog.getItems();
-        assertThat(1).isEqualTo(bronzeItems.size());
+        assertThat(bronzeItems.size()).isEqualTo(1);
         System.out.println("bronze items: " + bronzeItems);
     }
 

@@ -13,8 +13,16 @@ import java.util.List;
 
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
+import javax.sql.DataSource;
+
+@Transactional
+@Repository
 public class Catalog extends SimpleJdbcDaoSupport {
+
 
     public List<Item> getItems() {
         String query = "select name, price from item";
