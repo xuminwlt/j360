@@ -19,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import javax.sql.DataSource;
 
+
+//多数据源不适合使用注解的事务，需要对某一个特定的数据源控制事务，比如读写分离
 @Transactional
 @Repository
 public class Catalog extends SimpleJdbcDaoSupport {
