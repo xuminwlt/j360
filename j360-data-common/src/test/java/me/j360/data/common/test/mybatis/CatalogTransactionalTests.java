@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.*;
  * User: min_xu
  * Date: 2015/10/31
  * Time: 9:56
- * 说明：使用事务方式，每个方法中不允许同时访问多个数据库，否则会抛出异常
+ * 说明：使用事务方式，每个方法中不允许同时访问多个数据库，否则会抛出异常，增加事务拦截器实现
  */
 
 @DirtiesContext
